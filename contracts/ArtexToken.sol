@@ -1,17 +1,33 @@
 pragma solidity ^0.5.0;
 contract ArtexToken {
 
-  uint256 public totalSupply ; // state var written on the blockchain
-                                // it is required in ERC20 standard as well
+  string public name = "Artex Token";
+  string public symbol = "ARTX";
+  string public standard = "Artex Token v1.0";
 
-  // constructor
-  constructor () public  {
-    totalSupply = 1000000;
+  uint256 public totalSupply ;
+
+  mapping(address => uint256) public balanceOf;
+
+  event Transfer(
+    address indexed _from,
+    address indexed _to,
+    uint256 _value
+  );
+
+  constructor (uint256 _initalSupply) public  {
+    balanceOf[msg.sender] = _initalSupply;
+    totalSupply = _initalSupply;
 
   }
-  // Set the tokens
 
-  // Read the total num of tokens
+  function transfer(address _to, uint256 _value) public returns(bool success){
+    require(balanceOf[msg.sender] >= _value);
+    balanceOf[msg.sender] -= _value;
+    balanceOf[_to] += _value;
+    emit Transfer(msg.sender, _to, _value);
+    return true;
+  }
 
 
 
